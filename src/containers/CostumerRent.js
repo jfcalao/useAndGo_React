@@ -21,13 +21,6 @@ const ContenedorPJobs = styled.div`
 `;
 const CostumerRent = (props) => {
   const [vehiculos, setVehiculos] = useState([]);
-  const [userName, setUserName] = useState("");
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      "x-access-token": sessionStorage.getItem("token"),
-    },
-  };
 
   useEffect(() => {
     axios
