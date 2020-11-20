@@ -93,7 +93,7 @@ const Login = (props) => {
     if (!clave) {
       alert("debe digitar clave")
     }
-    await axios.post("https://use-and-go.herokuapp.com/login", {
+    await axios.post("http://54.90.249.186:3000/login", {
       username: usuario,
       password: clave
     }).then(response => {
@@ -108,7 +108,10 @@ const Login = (props) => {
           if (response.data.userType === "0") {
             props.history.push("/registro")
           } else {
-            props.history.push("/registro")
+            console.log(response.data.token);
+            sessionStorage.setItem("token", response.data.token);
+            console.log("calao",sessionStorage.getItem("token"));
+            props.history.push("/jobs")
           }
         }
       }

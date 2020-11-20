@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Modal from 'react-modal'
 import styled from 'styled-components'
-import perfil from '../assets/pruebaPersona.jpg'
+import perfil from '../assets/sinFoto.jpg'
 import {Link} from 'react-router-dom'
+import { storage } from "../firebase";
+
+Modal.setAppElement('#root')
 
 const Contenedor1 = styled.div`
     height:200vh;
@@ -65,18 +69,100 @@ const ImagenPerfil = styled.div`
     border-radius: 100%;
     margin-top:45px;
 ` 
-const Menu = () => {
+const ImagenPerfil1 = styled.div`
+    height:350px;
+    width:350px;
+    background-image:url(${perfil});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 100%;
+    margin-top:45px;
+    margin-left:20px;
+` 
 
+const ContainerModal = styled.div`
+    width:100%;
+    height:80vh;
+    display:flex;
+    flex-direction:row;
+    .custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+    }
+    .custom-file-input::before {
+    content: 'Cambiar imagen';
+        display: inline-block;
+        background: #0275d8;
+        border: 1px solid #999;
+        border-radius: 3px;
+        padding: 5px 8px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 10pt;
+        margin-top: 10px;
+        margin-left: 130px;
+    }
+    .custom-file-input:hover::before {
+        border-color: black;
+    }
+    .custom-file-input:active::before {
+        background: black;
+    }
+`
+
+const Menu = (props) => {
+  const [modalIsOpen,setModalIsOpen] = useState(false)
+  ///firebase
+  const [image,setImage] = useState(null);
+  const handleChange = e => {
+    if (e.target.files[0]){
+      setImage(e.target.files[0]);
+    }
+  };
+  const handleUpload = () => {
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error => {
+        console.log(error);
+      },
+      ()=>{
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then(url =>{
+            console.log(url)
+          });
+      }
+    )
+  };
+  console.log("image:",image);
+  /// firebase
   return (
       <>
       <Contenedor1>
         <Contenedor>
             <div className="column">
                 <ImagenPerfil></ImagenPerfil>
-                <h1>Gustavo Guerrero</h1> 
+                <h1>{props.userName}</h1> 
                 <div className="row">
-                    <Link className="mr mb" to='/perfil' style={{color: 'white'}}>Perfil</Link>
-                    <Link className="mr mb" to='/perfil' style={{color: 'white'}}>Salir</Link>
+                    <Modal isOpen={modalIsOpen} onRequestClose={()=>setModalIsOpen(false)}>
+                        <ContainerModal>
+                            <div>
+                                <ImagenPerfil1></ImagenPerfil1>
+                                <input type="file" className="custom-file-input" onChange={handleChange}></input>
+                            </div>
+                        </ContainerModal>
+                        <button onClick={handleUpload}>Upload</button>
+                        <button onClick={() => setModalIsOpen(false)}>Cerrar</button>
+                    </Modal>
+                    <Link onClick={()=>setModalIsOpen(true)} to='/jobs' className="mr mb" style={{color: 'white'}}>Perfil</Link>
+                    <Link className="mr mb" to='/login' style={{color: 'white'}}>Salir</Link>
                 </div>
             </div>
             <button>Agregar vehiculos</button>
@@ -84,13 +170,11 @@ const Menu = () => {
             <button>Eliminar vehiculos</button>
             <button>Seguimiento de vehiculos</button>
             <div id="ayuda">
-                <Link className="mr mb" to='/perfil' style={{color: 'white'}}>Ayuda?</Link>
+                <Link className="mr mb" to='/help' style={{color: 'white'}}>Ayuda?</Link>
             </div>
         </Contenedor>
       </Contenedor1>
       </>
   )
 }
-
-
 export default Menu
