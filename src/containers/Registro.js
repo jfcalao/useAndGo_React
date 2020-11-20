@@ -218,7 +218,7 @@ const Registro = (props) => {
               </select>
               <input id="boton" type="submit" value="Iniciar sesión"></input>
             </form>
-            <Link to='/login' style={{color: 'white'}}>Ya tienes cuenta? Inicia sesión</Link>
+            <Link to='/' style={{color: 'white'}}>Ya tienes cuenta? Inicia sesión</Link>
           </div>
         </Inicio>
       </ContenedorLogin>

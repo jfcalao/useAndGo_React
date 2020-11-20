@@ -3,10 +3,7 @@ import styled from "styled-components";
 import NavBar from "../components/Menu";
 import Cards from "../components/Card";
 import NewCard from "../components/NewCard";
-import { storage } from "../firebase";
-import logo from "../assets/logo.png";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const ContenedorJobs = styled.div`
   display: flex;
@@ -56,7 +53,6 @@ const Jobs = (props) => {
       <button onClick={handleUpload}>Upload</button>
   /// firebase
   */
-  const [access, setAccess] = useState(false);
   const [vehiculos, setVehiculos] = useState([]);
   const [userName, setUserName] = useState("");
   let axiosConfig = {
@@ -74,11 +70,9 @@ const Jobs = (props) => {
         setVehiculos(response.data.vehiculos);
         setUserName(response.data.nombreUsuario)
         console.log("Este es el array?", vehiculos);
-        setAccess(true);
       })
       .catch((e) => {
         // Capturamos los errores
-        setAccess(false);
         console.log("Todo mal", e);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
