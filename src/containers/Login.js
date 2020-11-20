@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import img from '../assets/login.jpg'
 import logo from '../assets/logo.png'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 
 const ContenedorLogin = styled.div`
   display:flex;
@@ -76,6 +77,9 @@ const Inicio = styled.div`
   input[type=submit]:hover {
     background-color: #0275c0;
   }
+  #boton{
+    margin-bottom:20px;
+  }
 `
 const Login = (props) => {
     const [usuario,setUsuario] = useState('');
@@ -89,11 +93,11 @@ const Login = (props) => {
     if (!clave) {
       alert("debe digitar clave")
     }
-    await axios.post("https://hackathonredis.herokuapp.com/singin", {
+    await axios.post("https://use-and-go.herokuapp.com/login", {
       username: usuario,
       password: clave
     }).then(response => {
-      console.log(props.setToken(response.data.token))
+      console.log(response);
       if (response.data === "The email doesn't exists") {
         alert("The email doesn't exists")
       } else {
@@ -102,9 +106,9 @@ const Login = (props) => {
         } else {
           alert("Login exitoso")         
           if (response.data.userType === "0") {
-            props.history.push("/comprador")
+            props.history.push("/registro")
           } else {
-            props.history.push("/inicioProductor")
+            props.history.push("/registro")
           }
         }
       }
@@ -116,16 +120,17 @@ const Login = (props) => {
       <ContenedorLogin>
         <Fondo></Fondo>
         <Inicio>
-          <img class="logo" src={logo} width="105" height="30" alt="Logo Use&Go"/>
+          <img className="logo" src={logo} width="105" height="30" alt="Logo Use&Go"/>
           <div id="wrap">
             <form onSubmit={handleLogin}>
               <h1>Bienvenido de vuelta</h1>
-              <label for="fname">Correo</label>
-              <input onChange={(e) => setUsuario(e.target.value)} type="text" id="fname" name="correo" placeholder="Ingresa tu correo"></input>
-              <label for="fname">Contraseña</label>
-              <input onChange={(e) => setClave(e.target.value)} type="password" id="fname" name="correo" placeholder="Ingresa tu contraseña"></input>
-              <input type="submit" value="Iniciar sesión"></input>
+              <label>Correo</label>
+              <input onChange={(e) => setUsuario(e.target.value)} type="text"  name="correo" placeholder="Ingresa tu correo"></input>
+              <label>Contraseña</label>
+              <input onChange={(e) => setClave(e.target.value)} type="password" name="correo" placeholder="Ingresa tu contraseña"></input>
+              <input id="boton" type="submit" value="Iniciar sesión"></input>
             </form>
+            <Link to='/registro' style={{color: 'white'}}>Todavia no tienes cuenta? Registrate</Link>
           </div>
         </Inicio>
       </ContenedorLogin>
