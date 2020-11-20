@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Modal from 'react-modal'
 import styled from 'styled-components'
 import perfil from '../assets/sinFoto.jpg'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import { storage } from "../firebase";
 
 Modal.setAppElement('#root')
@@ -113,7 +113,8 @@ const ContainerModal = styled.div`
     }
 `
 
-const Menu = (props) => {
+const MenuC = (props) => {
+    const {push} = useHistory();
   const [modalIsOpen,setModalIsOpen] = useState(false)
   ///firebase
   const [image,setImage] = useState(null);
@@ -122,6 +123,12 @@ const Menu = (props) => {
       setImage(e.target.files[0]);
     }
   };
+  const verLista = () => {
+    push("/costumerrent");
+  }
+  const alquilar = () => {
+    push("/costumer");
+  }
   const handleUpload = () => {
     const uploadTask = storage.ref(`images/${image.name}`).put(image);
     uploadTask.on(
@@ -161,14 +168,13 @@ const Menu = (props) => {
                         <button onClick={handleUpload}>Upload</button>
                         <button onClick={() => setModalIsOpen(false)}>Cerrar</button>
                     </Modal>
-                    <Link onClick={()=>setModalIsOpen(true)} to='/jobs' className="mr mb" style={{color: 'white'}}>Perfil</Link>
+                    <Link onClick={()=>setModalIsOpen(true)} to='/costumer' className="mr mb" style={{color: 'white'}}>Perfil</Link>
                     <Link className="mr mb" to='/' style={{color: 'white'}}>Salir</Link>
                 </div>
             </div>
-            <button>Agregar vehiculos</button>
-            <button>Modificar vehiculos</button>
-            <button>Eliminar vehiculos</button>
-            <button>Seguimiento de vehiculos</button>
+            <button onClick={alquilar}>Alquilar</button>
+            <button onClick={verLista}>Ver historia de alquileres</button>
+            <button>Eliminar un alquiler</button>
             <div id="ayuda">
                 <Link className="mr mb" to='/help' style={{color: 'white'}}>Ayuda?</Link>
             </div>
@@ -177,4 +183,4 @@ const Menu = (props) => {
       </>
   )
 }
-export default Menu
+export default MenuC
