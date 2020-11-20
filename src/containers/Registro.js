@@ -145,7 +145,7 @@ const Registro = (props) => {
       if (contraseña !== contraseña1) {
         alert("Las claves no coinciden")
       } else {
-        const res = await axios.post('http://54.90.249.186:3000/singup',{
+        const res = await axios.post('https://use-and-go.herokuapp.com/singup',{
             name: nombre,
             lastname: apellido,
             gender: sexo,
@@ -161,7 +161,7 @@ const Registro = (props) => {
           alert("No se pudo registrar, vuelva a intentar")
         } else {
           alert("Registro exitoso")
-          props.history.push("/login")
+          props.history.push("/")
         }
       }
     }

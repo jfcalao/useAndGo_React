@@ -148,12 +148,13 @@ const Card = (props) => {
               },
             };
             await axios
-              .post("http://54.90.249.186:3000/vehiculos/register", {
+              .post("https://use-and-go.herokuapp.com/vehiculos/register", {
                 foto: url,
                 descripcion: descripcion,
                 modelo: modelo,
                 año: año,
-                tipo: tipo
+                tipo: tipo,
+                alquilado:false
               }, axiosConfig)
               .then((response) => {
                 alert('El vehiculo se agrego correctamente');

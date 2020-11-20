@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import NavBar from "../components/Menu";
-import Cards from "../components/Card";
-import NewCard from "../components/NewCard";
+import NavBar from "../components/MenuC";
+import Cards from "../components/CardC";
 import axios from "axios";
 
 const ContenedorJobs = styled.div`
@@ -20,39 +19,7 @@ const ContenedorPJobs = styled.div`
   height: 400vh;
   background-color: #181818;
 `;
-const Jobs = (props) => {
-  /*
-  ///firebase
-  const [image,setImage] = useState(null);
-  const handleChange = e => {
-    if (e.target.files[0]){
-      setImage(e.target.files[0]);
-    }
-  };
-  const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error);
-      },
-      ()=>{
-        storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then(url =>{
-            console.log(url)
-          });
-      }
-    )
-  };
-  console.log("image:",image);
-  <input type="file" onChange={handleChange}></input>
-      <button onClick={handleUpload}>Upload</button>
-  /// firebase
-  */
+const Costumer = (props) => {
   const [vehiculos, setVehiculos] = useState([]);
   const [userName, setUserName] = useState("");
   let axiosConfig = {
@@ -67,8 +34,10 @@ const Jobs = (props) => {
       .post("https://use-and-go.herokuapp.com/vehiculos", {}, axiosConfig)
       .then((response) => {
         console.log("Todo bien", response);
+        console.log(response.data.vehiculos);
         setVehiculos(response.data.vehiculos);
         setUserName(response.data.nombreUsuario)
+        sessionStorage.setItem('usern',response.data.nombreUsuario);
         console.log("Este es el array?", vehiculos);
       })
       .catch((e) => {
@@ -85,23 +54,23 @@ const Jobs = (props) => {
         <ContenedorJobs>
           {
           vehiculos.map(item=>{
+              console.log("este es itm",item);
             return(
               <Cards
-                tipo={item[0].tipo}
-                foto={item[0].foto}
-                modelo={item[0].modelo}
-                año={item[0].año}
-                descripcion={item[0].descripcion}
+                tipo={item.tipo}
+                foto={item.foto}
+                modelo={item.modelo}
+                año={item.año}
+                descripcion={item.descripcion}
+                id={item._id}
               ></Cards>
             )
-
           })
           }
-          <NewCard></NewCard>
         </ContenedorJobs>
       </ContenedorPJobs>
     </>
   );
 };
 
-export default Jobs;
+export default Costumer;
