@@ -44,14 +44,14 @@ const ContainerPadre = styled.div`
 `
 const CardC = ({ foto, tipo, modelo, año, descripcion, id, rented }) => {
   const _id = id;
-  const {go}= useHistory()
+  const {push}= useHistory()
   const enviar = async () => {
     await axios.post("https://use-and-go.herokuapp.com/vehiculos/rent", { id: _id })
-    go(0);
+    push("/costumer");
   };
   const entregar = async () => {
     await axios.post("https://use-and-go.herokuapp.com/vehiculos/unrent", { id: _id })
-    go(0);
+    push("/costumerrent");
   };
   console.log(foto);
 
