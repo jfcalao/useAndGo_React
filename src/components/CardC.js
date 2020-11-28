@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react'
+import { useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -43,13 +44,14 @@ const ContainerPadre = styled.div`
 `
 const CardC = ({ foto, tipo, modelo, año, descripcion, id, rented }) => {
   const _id = id;
+  const {go}= useHistory()
   const enviar = async () => {
     await axios.post("https://use-and-go.herokuapp.com/vehiculos/rent", { id: _id })
-    window.location.replace('');
+    go(0);
   };
   const entregar = async () => {
     await axios.post("https://use-and-go.herokuapp.com/vehiculos/unrent", { id: _id })
-    window.location.replace('');
+    go(0);
   };
   console.log(foto);
 
@@ -65,9 +67,9 @@ const CardC = ({ foto, tipo, modelo, año, descripcion, id, rented }) => {
       <h4>Año:{año}</h4>
       <p>Descripcion:{descripcion}</p>
       {rented ?
-      <button onClick={enviar}>Entregar</button>:
+      <button onClick={entregar}>Entregar</button>:
 
-      <button onClick={entregar}>Alquilar</button>
+      <button onClick={enviar}>Alquilar</button>
       }
     </ContainerPadre>
   )
