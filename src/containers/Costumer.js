@@ -63,6 +63,7 @@ const Costumer = (props) => {
                 año={item.año}
                 descripcion={item.descripcion}
                 id={item._id}
+                rented={false}
               ></Cards>
             )
           })

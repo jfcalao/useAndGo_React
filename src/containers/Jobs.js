@@ -85,6 +85,7 @@ const Jobs = (props) => {
         <ContenedorJobs>
           {
           vehiculos.map(item=>{
+            console.log(item)
             return(
               <Cards
                 tipo={item[0].tipo}
