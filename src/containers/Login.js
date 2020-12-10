@@ -1,9 +1,9 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import img from '../assets/login.jpg'
 import logo from '../assets/logo.png'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const ContenedorLogin = styled.div`
   display:flex;
@@ -82,10 +82,11 @@ const Inicio = styled.div`
   }
 `
 const Login = (props) => {
-    const [usuario,setUsuario] = useState('');
-    const [clave,setClave] = useState('');
+  const [usuario, setUsuario] = useState('');
+  const [clave, setClave] = useState('');
+  const { push } = useHistory()
 
-    const handleLogin = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     if (!usuario) {
       alert("debe digitar usuario")
@@ -104,40 +105,43 @@ const Login = (props) => {
         if (response.data.auth === false) {
           alert("contraseña incorrecta")
         } else {
-          alert("Login exitoso")         
           if (response.data.userType === "0") {
             console.log("esto es usuario 0");
             console.log(response.data.token);
             sessionStorage.setItem("token", response.data.token);
-            props.history.push("/costumer")
+            push("/costumer")
           } else {
             console.log("esto es usuario 1");
             console.log(response.data.token);
             sessionStorage.setItem("token", response.data.token);
-            console.log("calao",sessionStorage.getItem("token"));
-            props.history.push("/jobs")
+            console.log("calao", sessionStorage.getItem("token"));
+            push("/jobs")
           }
         }
       }
     })
-      .catch(e => console.error("problema fetching data", e));
+      .catch(e => {
+        alert("The uset doesn't exists")
+        console.error("problema fetching data", e)
+      }
+      );
   }
   return (
     <>
       <ContenedorLogin>
         <Fondo></Fondo>
         <Inicio>
-          <img className="logo" src={logo} width="105" height="30" alt="Logo Use&Go"/>
+          <img className="logo" src={logo} width="105" height="30" alt="Logo Use&Go" />
           <div id="wrap">
             <form onSubmit={handleLogin}>
               <h1>Bienvenido de vuelta</h1>
               <label>Correo</label>
-              <input onChange={(e) => setUsuario(e.target.value)} type="text"  name="correo" placeholder="Ingresa tu correo"></input>
+              <input onChange={(e) => setUsuario(e.target.value)} type="text" name="correo" placeholder="Ingresa tu correo"></input>
               <label>Contraseña</label>
               <input onChange={(e) => setClave(e.target.value)} type="password" name="correo" placeholder="Ingresa tu contraseña"></input>
               <input id="boton" type="submit" value="Iniciar sesión"></input>
             </form>
-            <Link to='/registro' style={{color: 'white'}}>Todavia no tienes cuenta? Registrate</Link>
+            <Link to='/registro' style={{ color: 'white' }}>Todavia no tienes cuenta? Registrate</Link>
           </div>
         </Inicio>
       </ContenedorLogin>

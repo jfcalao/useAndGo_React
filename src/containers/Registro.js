@@ -1,9 +1,9 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import img from '../assets/registro.jpg'
 import logo from '../assets/logo.png'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const ContenedorLogin = styled.div`
   display:flex;
@@ -102,69 +102,70 @@ const Inicio = styled.div`
   }
 `
 const Registro = (props) => {
-    const [nombre,setNombre] = useState('');
-    const [apellido,setApellido] = useState('');
-    const [sexo,setSexo] = useState('M');
-    const [fecha,setFecha] = useState('');
-    const [cedula,setCedula] = useState('');
-    const [usuario,setUsuario] = useState('');
-    const [correo,setCorreo] = useState('');
-    const [contraseña,setContraseña] = useState('');
-    const [contraseña1,setContraseña1] = useState('');
-    const [tipo,setTipo] = useState('0');
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [sexo, setSexo] = useState('M');
+  const [fecha, setFecha] = useState('');
+  const [cedula, setCedula] = useState('');
+  const [usuario, setUsuario] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [contraseña1, setContraseña1] = useState('');
+  const [tipo, setTipo] = useState('0');
+  const { push } = useHistory()
 
-    const registrarse = async e => {
-      e.preventDefault();
-      if (!nombre) {
-        alert("debe digitar nombre")
-      }
-      if (!apellido) {
-        alert("debe digitar apellidos")
-      }
-      if (!sexo) {
-        alert("debe digitar sexo")
-      }
-      if (!fecha) {
-        alert("debe digitar fecha")
-      }
-      if (!cedula) {
-        alert("debe digitar cedula")
-      }
-      if (!usuario) {
-        alert("debe digitar usuario")
-      }
-      if (!correo) {
-        alert("debe digitar correo")
-      }
-      if (!contraseña) {
-        alert("debe digitar contraseña")
-      }
-      if (!tipo) {
-        alert("debe digitar tipo")
-      }
-      if (contraseña !== contraseña1) {
-        alert("Las claves no coinciden")
+  const registrarse = async e => {
+    e.preventDefault();
+    if (!nombre) {
+      alert("debe digitar nombre")
+    }
+    if (!apellido) {
+      alert("debe digitar apellidos")
+    }
+    if (!sexo) {
+      alert("debe digitar sexo")
+    }
+    if (!fecha) {
+      alert("debe digitar fecha")
+    }
+    if (!cedula) {
+      alert("debe digitar cedula")
+    }
+    if (!usuario) {
+      alert("debe digitar usuario")
+    }
+    if (!correo) {
+      alert("debe digitar correo")
+    }
+    if (!contraseña) {
+      alert("debe digitar contraseña")
+    }
+    if (!tipo) {
+      alert("debe digitar tipo")
+    }
+    if (contraseña !== contraseña1) {
+      alert("Las claves no coinciden")
+    } else {
+      const res = await axios.post('https://use-and-go.herokuapp.com/singup', {
+        name: nombre,
+        lastname: apellido,
+        gender: sexo,
+        fecha_nacimiento: fecha,
+        cedula: cedula,
+        calificacion: "",
+        username: usuario,
+        password: contraseña,
+        email: correo,
+        type: tipo
+      })
+      if (res === "There was a problem registering your user") {
+        alert("No se pudo registrar, vuelva a intentar")
       } else {
-        const res = await axios.post('https://use-and-go.herokuapp.com/singup',{
-            name: nombre,
-            lastname: apellido,
-            gender: sexo,
-            fecha_nacimiento: fecha,
-            cedula: cedula,
-            calificacion: "",
-            username: usuario,
-            password: contraseña,
-            email: correo,
-            type: tipo
-          })
-        if (res === "There was a problem registering your user") {
-          alert("No se pudo registrar, vuelva a intentar")
-        } else {
-          alert("Registro exitoso")
-          props.history.push("/")
-        }
+        alert("Registro exitoso")
+        push("/")
       }
     }
+  }
   return (
     <>
       <ContenedorLogin>
@@ -174,25 +175,25 @@ const Registro = (props) => {
             <form onSubmit={registrarse}>
               <div className="row">
                 <h1>Bienvenido</h1>
-                <img className="logo" src={logo} width="105" height="30" alt="Logo Use&Go"/>
+                <img className="logo" src={logo} width="105" height="30" alt="Logo Use&Go" />
               </div>
               <div className="row">
                 <div className="column">
                   <label>Nombre</label>
-                  <input onChange={(e) => setNombre(e.target.value)}  type="text" name="nombre" placeholder="Nombre"></input>
+                  <input onChange={(e) => setNombre(e.target.value)} type="text" name="nombre" placeholder="Nombre"></input>
                 </div>
                 <div className="ml column">
                   <label>Apellidos</label>
-                  <input onChange={(e) => setApellido(e.target.value)}  type="text" name="apellidos" placeholder="Apellidos"></input>
+                  <input onChange={(e) => setApellido(e.target.value)} type="text" name="apellidos" placeholder="Apellidos"></input>
                 </div>
               </div>
               <div className="row">
                 <div className="column">
-                <label>Sexo</label>
-                <select onChange={(e) => setSexo(e.target.value)} name="sexo">
-                <option value="M">Hombre</option>
-                <option value="F">Mujer</option>
-              </select>
+                  <label>Sexo</label>
+                  <select onChange={(e) => setSexo(e.target.value)} name="sexo">
+                    <option value="M">Hombre</option>
+                    <option value="F">Mujer</option>
+                  </select>
                 </div>
                 <div className="ml column">
                   <label>Fecha</label>
@@ -204,9 +205,9 @@ const Registro = (props) => {
               <label>Cedula</label>
               <input onChange={(e) => setCedula(e.target.value)} type="text" name="cedula" placeholder="Cedula"></input>
               <label>Usuario</label>
-              <input onChange={(e) => setUsuario(e.target.value)}  type="text" name="usuario" placeholder="Nombre de usuario"></input>
+              <input onChange={(e) => setUsuario(e.target.value)} type="text" name="usuario" placeholder="Nombre de usuario"></input>
               <label>Correo</label>
-              <input onChange={(e) => setCorreo(e.target.value)}  type="text" name="correo" placeholder="Correo"></input>
+              <input onChange={(e) => setCorreo(e.target.value)} type="text" name="correo" placeholder="Correo"></input>
               <label>Contraseña</label>
               <input onChange={(e) => setContraseña(e.target.value)} type="password" name="contraseña" placeholder="Ingresa tu contraseña"></input>
               <label>Contraseña</label>
@@ -218,7 +219,7 @@ const Registro = (props) => {
               </select>
               <input id="boton" type="submit" value="Iniciar sesión"></input>
             </form>
-            <Link to='/' style={{color: 'white'}}>Ya tienes cuenta? Inicia sesión</Link>
+            <Link to='/' style={{ color: 'white' }}>Ya tienes cuenta? Inicia sesión</Link>
           </div>
         </Inicio>
       </ContenedorLogin>
