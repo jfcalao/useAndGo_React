@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import styled from "styled-components";
 import { storage } from "../firebase";
 import axios from "axios";
+import { useHistory} from 'react-router-dom'
+
 Modal.setAppElement("#root");
 
 const ContainerPadre = styled.div`
@@ -117,6 +119,8 @@ const Card = (props) => {
   const [descripcion, setDescripcion] = useState("");
   const [año, setAño] = useState("");
 
+  const {push}= useHistory()
+
   /// fin variables
 
   ///firebase
@@ -158,7 +162,8 @@ const Card = (props) => {
               }, axiosConfig)
               .then((response) => {
                 alert('El vehiculo se agrego correctamente');
-                window.location.replace('');
+                setModalIsOpen(false)
+                push("/jobs")
               })
               .catch((e) => console.error("problema fetching data", e));
           });
